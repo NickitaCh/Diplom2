@@ -15,7 +15,7 @@ public class UserClient extends Client {
     public static final User noEmailUser = UserGenerator.generatorCoThree();
 
     @Step("Create user")
-    public static ValidatableResponse createUser() {
+    public static ValidatableResponse createUser(User user) {
         return given()
                 .spec(getBaseSpec())
                 .body(user)
@@ -24,40 +24,11 @@ public class UserClient extends Client {
                 .then();
     }
 
-    @Step("Create wrong user")
-    public static ValidatableResponse createWrongUser() {
-        return given()
-                .spec(getBaseSpec())
-                .body(wrongUser)
-                .when()
-                .post(CREATE_USER)
-                .then();
-    }
     @Step("Login user")
-    public static ValidatableResponse login() {
+    public static ValidatableResponse login(User user) {
         return given()
                 .spec(getBaseSpec())
                 .body(user)
-                .when()
-                .post(LOGIN_USER)
-                .then();
-    }
-
-    @Step("Login wrong user")
-    public static ValidatableResponse loginWrongUser() {
-        return given()
-                .spec(getBaseSpec())
-                .body(wrongUser)
-                .when()
-                .post(LOGIN_USER)
-                .then();
-    }
-
-    @Step("Login without Email user")
-    public static ValidatableResponse loginNoEmailUser() {
-        return given()
-                .spec(getBaseSpec())
-                .body(noEmailUser)
                 .when()
                 .post(LOGIN_USER)
                 .then();
@@ -74,7 +45,7 @@ public class UserClient extends Client {
 
     @Step("Take access token")
     public static String getToken() {
-        return login()
+        return login(user)
                 .extract()
                 .body()
                 .path("accessToken")

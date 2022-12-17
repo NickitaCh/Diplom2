@@ -14,13 +14,13 @@ public class UserLoginTest {
 
     @Before
     public void setUp() {
-        createUser();
+        createUser(UserClient.user);
     }
 
     @Test
     @DisplayName("Логин пользователя в системе")
     public void loginUserTest() {
-        ValidatableResponse loginResponse = UserClient.login();
+        ValidatableResponse loginResponse = UserClient.login(user);
         int statusCode = loginResponse.extract().statusCode();
         assertEquals("Статус код не 201", SC_OK, statusCode);
         boolean isTrue = loginResponse.extract().path("success");
@@ -30,7 +30,7 @@ public class UserLoginTest {
     @Test
     @DisplayName("Логин с несуществующей парой логин-пароль")
     public void noLoginAndPassUserTest() {
-        ValidatableResponse loginResponse = UserClient.loginWrongUser();
+        ValidatableResponse loginResponse = UserClient.login(wrongUser);
         int statusCode = loginResponse.extract().statusCode();
         assertEquals("Статус код не 401", SC_UNAUTHORIZED, statusCode);
         boolean isFalse = loginResponse.extract().path("success");

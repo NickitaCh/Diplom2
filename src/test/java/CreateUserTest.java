@@ -21,7 +21,7 @@ public class CreateUserTest {
     @Test
     @DisplayName("Создание пользователя")
     public void createUserTest() {
-        ValidatableResponse response = createUser();
+        ValidatableResponse response = createUser(UserClient.user);
         int statusCode = response.extract().statusCode();
         assertEquals("Статус код не 200", SC_OK, statusCode);
         boolean isTrue = response.extract().path("success");
@@ -31,8 +31,8 @@ public class CreateUserTest {
     @Test
     @DisplayName("Создание пользователя, который уже зарегистрирован")
     public void createSameUserTest() {
-        ValidatableResponse response1 = createUser();
-        ValidatableResponse response2 = createUser();
+        ValidatableResponse response1 = createUser(UserClient.user);
+        ValidatableResponse response2 = createUser(UserClient.user);
         int statusCode = response2.extract().statusCode();
         assertEquals("Дубликат создан", SC_FORBIDDEN, statusCode);
         boolean isFalse = response2.extract().path("success");
@@ -43,7 +43,7 @@ public class CreateUserTest {
     @DisplayName("Создание пользователя, без заполнения обязательного поля")
     public void createInvalidUserTest() {
         deleteCheck = false;
-        ValidatableResponse response = UserClient.createWrongUser();
+        ValidatableResponse response = UserClient.createUser(UserClient.wrongUser);
         int statusCode = response.extract().statusCode();
         assertEquals("Курьер создан без обязательного поля", SC_FORBIDDEN, statusCode);
         boolean isFalse = response.extract().path("success");

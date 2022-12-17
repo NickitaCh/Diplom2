@@ -19,8 +19,8 @@ public class ChangeUserTest {
     @Test
     @DisplayName("Изменение данных с авторизацией")
     public void changeTest() {
-        UserClient.createUser();
-        ValidatableResponse loginResponse = UserClient.login();
+        UserClient.createUser(UserClient.user);
+        ValidatableResponse loginResponse = UserClient.login(UserClient.user);
         int statusCode = loginResponse.extract().statusCode();
         assertEquals("Статус код не 201", SC_OK, statusCode);
         boolean isTrue = loginResponse.extract().path("success");
@@ -30,7 +30,7 @@ public class ChangeUserTest {
     @Test
     @DisplayName("Изменение данных без авторизации")
     public void changeNoLoginUserTest() {
-        ValidatableResponse loginResponse = UserClient.loginNoEmailUser();
+        ValidatableResponse loginResponse = UserClient.login(UserClient.noEmailUser);
         int statusCode = loginResponse.extract().statusCode();
         assertEquals("You should be authorised", SC_UNAUTHORIZED, statusCode);
         boolean isFalse = loginResponse.extract().path("success");

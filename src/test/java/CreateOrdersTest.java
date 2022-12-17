@@ -16,7 +16,7 @@ import static user.UserClient.delete;
 public class CreateOrdersTest {
     @Before
     public void setUp() {
-        UserClient.createUser();
+        UserClient.createUser(UserClient.user);
     }
 
     @Test
